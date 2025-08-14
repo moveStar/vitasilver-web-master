@@ -1,3 +1,9 @@
+<!--
+ * @Description: 
+ * @Author: zhangweijuan
+ * @Date: 2025-06-16 23:26:06
+ * @LastEditTime: 2025-08-13 10:03:31
+-->
 <template>
   <header class="login-header">
     <logo-full-icon class="logo" />
@@ -15,7 +21,7 @@
   </header>
 </template>
 <script setup lang="ts">
-import LogoFullIcon from '@/assets/assets-logo-full.svg?component';
+import LogoFullIcon from '@/assets/logo.svg?component';
 import { useSettingStore } from '@/store';
 
 const settingStore = useSettingStore();

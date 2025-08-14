@@ -3,6 +3,35 @@ import type { MockMethod } from 'vite-plugin-mock';
 
 export default [
   {
+    url: '/api/get-member-list',
+    method: 'get',
+    response: () => ({
+      code: 0,
+      data: {
+        ...Mock.mock({
+          'list|1-100': [
+            {
+              'UID|+1': '@id()',
+              // avatar: '@image("100x100", "@color()", "@cname()")',
+              // 头像，使用随机头像URL
+              // avatar: '@image(100x100, @color, #fff, avatar)', // 生成100x100像素的随机色块头像，文字为"avatar"
+              // 或者使用随机头像服务（需要网络）：
+              avatar: 'https://api.dicebear.com/7.x/identicon/svg?seed=@natural(1, 1000)', // 使用dicebear生成头像
+              // 使用中文姓名
+              nickname: '@cname()',
+              'gender|1': ['男', '女'],
+              'age|20-60': 1,
+              phone: /^1[39]\d{9}$/,
+              'status|1': ['正常', '禁用', '已注销'],
+              'tags|1-3': ['@pick(["书法"、"养生"、"旅游"、"摄影"、 "新用户"])'],
+              createTime: '2020-05-30 @date("HH:mm:ss")',
+            },
+          ],
+        }),
+      },
+    }),
+  },
+  {
     url: '/api/get-purchase-list',
     method: 'get',
     response: () => ({
@@ -154,44 +183,44 @@ export default [
         ...Mock.mock({
           list: [
             {
-              path: '/list',
-              name: 'list',
+              path: '/member',
+              name: 'member',
               component: 'LAYOUT',
-              redirect: '/list/base',
+              redirect: '/member/base',
               meta: {
                 title: {
-                  zh_CN: '列表页',
-                  en_US: 'List',
+                  zh_CN: '用户管理',
+                  en_US: 'Member',
                 },
                 icon: 'view-list',
               },
               children: [
                 {
-                  path: 'base',
-                  name: 'ListBase',
-                  component: '/list/base/index',
+                  path: 'baseList',
+                  name: 'MemberBase',
+                  component: '/member/baseList/index',
                   meta: {
                     title: {
-                      zh_CN: '基础列表页',
-                      en_US: 'Base List',
+                      zh_CN: '用户信息',
+                      en_US: 'Member Info',
                     },
                   },
                 },
                 {
-                  path: 'card',
-                  name: 'ListCard',
-                  component: '/list/card/index',
+                  path: 'realnameVerification',
+                  name: 'Real-name Verification',
+                  component: '/member/realnameVerification/index',
                   meta: {
                     title: {
-                      zh_CN: '卡片列表页',
-                      en_US: 'Card List',
+                      zh_CN: '实名认证',
+                      en_US: 'Real-name Verification',
                     },
                   },
                 },
                 {
                   path: 'filter',
                   name: 'ListFilter',
-                  component: '/list/filter/index',
+                  component: '/member/filter/index',
                   meta: {
                     title: {
                       zh_CN: '筛选列表页',
@@ -202,159 +231,11 @@ export default [
                 {
                   path: 'tree',
                   name: 'ListTree',
-                  component: '/list/tree/index',
+                  component: '/member/tree/index',
                   meta: {
                     title: {
                       zh_CN: '树状筛选列表页',
                       en_US: 'Tree List',
-                    },
-                  },
-                },
-              ],
-            },
-            {
-              path: '/form',
-              name: 'form',
-              component: 'LAYOUT',
-              redirect: '/form/base',
-              meta: {
-                title: {
-                  zh_CN: '表单页',
-                  en_US: 'Form',
-                },
-                icon: 'edit-1',
-              },
-              children: [
-                {
-                  path: 'base',
-                  name: 'FormBase',
-                  component: '/form/base/index',
-                  meta: {
-                    title: {
-                      zh_CN: '基础表单页',
-                      en_US: 'Base Form',
-                    },
-                  },
-                },
-                {
-                  path: 'step',
-                  name: 'FormStep',
-                  component: '/form/step/index',
-                  meta: {
-                    title: {
-                      zh_CN: '分步表单页',
-                      en_US: 'Step Form',
-                    },
-                  },
-                },
-              ],
-            },
-            {
-              path: '/detail',
-              name: 'detail',
-              component: 'LAYOUT',
-              redirect: '/detail/base',
-              meta: {
-                title: {
-                  zh_CN: '详情页',
-                  en_US: 'Detail',
-                },
-                icon: 'layers',
-              },
-              children: [
-                {
-                  path: 'base',
-                  name: 'DetailBase',
-                  component: '/detail/base/index',
-                  meta: {
-                    title: {
-                      zh_CN: '基础详情页',
-                      en_US: 'Base Detail',
-                    },
-                  },
-                },
-                {
-                  path: 'advanced',
-                  name: 'DetailAdvanced',
-                  component: '/detail/advanced/index',
-                  meta: {
-                    title: {
-                      zh_CN: '多卡片详情页',
-                      en_US: 'Card Detail',
-                    },
-                  },
-                },
-                {
-                  path: 'deploy',
-                  name: 'DetailDeploy',
-                  component: '/detail/deploy/index',
-                  meta: {
-                    title: {
-                      zh_CN: '数据详情页',
-                      en_US: 'Data Detail',
-                    },
-                  },
-                },
-                {
-                  path: 'secondary',
-                  name: 'DetailSecondary',
-                  component: '/detail/secondary/index',
-                  meta: {
-                    title: {
-                      zh_CN: '二级详情页',
-                      en_US: 'Secondary Detail',
-                    },
-                  },
-                },
-              ],
-            },
-            {
-              path: '/frame',
-              name: 'Frame',
-              component: 'Layout',
-              redirect: '/frame/doc',
-              meta: {
-                icon: 'internet',
-                title: {
-                  zh_CN: '外部页面',
-                  en_US: 'External',
-                },
-              },
-              children: [
-                {
-                  path: 'doc',
-                  name: 'Doc',
-                  component: 'IFrame',
-                  meta: {
-                    frameSrc: 'https://tdesign.tencent.com/starter/docs/vue-next/get-started',
-                    title: {
-                      zh_CN: '使用文档（内嵌）',
-                      en_US: 'Documentation(IFrame)',
-                    },
-                  },
-                },
-                {
-                  path: 'TDesign',
-                  name: 'TDesign',
-                  component: 'IFrame',
-                  meta: {
-                    frameSrc: 'https://tdesign.tencent.com/vue-next/getting-started',
-                    title: {
-                      zh_CN: 'TDesign 文档（内嵌）',
-                      en_US: 'TDesign (IFrame)',
-                    },
-                  },
-                },
-                {
-                  path: 'TDesign2',
-                  name: 'TDesign2',
-                  component: 'IFrame',
-                  meta: {
-                    frameSrc: 'https://tdesign.tencent.com/vue-next/getting-started',
-                    frameBlank: true,
-                    title: {
-                      zh_CN: 'TDesign 文档（外链',
-                      en_US: 'TDesign Doc(Link)',
                     },
                   },
                 },

@@ -60,7 +60,6 @@ const renderMenuTitle = (title: string | Record<string, string>) => {
 };
 
 const getMenuList = (list: MenuRoute[], basePath?: string): ListItemType[] => {
-  console.log('list----1', list, basePath);
   if (!list || list.length === 0) {
     return [];
   }
@@ -83,7 +82,6 @@ const getMenuList = (list: MenuRoute[], basePath?: string): ListItemType[] => {
     })
     .filter((item) => item.meta && item.meta.hidden !== true);
 };
-console.log('list----2', list.value);
 
 const getHref = (item: MenuRoute) => {
   const { frameSrc, frameBlank } = item.meta;

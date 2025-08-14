@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: zhangweijuan
  * @Date: 2025-06-16 23:26:06
- * @LastEditTime: 2025-08-11 14:29:54
+ * @LastEditTime: 2025-08-13 10:05:18
 -->
 <template>
   <div class="login-wrapper">
@@ -25,7 +25,7 @@
       <tdesign-setting />
     </div>
 
-    <footer class="copyright">Copyright @ 2021-2025 Tencent. All Rights Reserved</footer>
+    <footer class="copyright">Copyright @ 2025-2028 VICode. All Rights Reserved</footer>
   </div>
 </template>
 <script setup lang="ts">
