@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../td-vue3-demo"
+		}
+  ],
+  "settings": {
+    "CodeFree.index": true
+  }
+}

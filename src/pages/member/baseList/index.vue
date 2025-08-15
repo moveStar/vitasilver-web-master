@@ -2,7 +2,7 @@
  * @Description: 用户信息
  * @Author: zhangweijuan
  * @Date: 2025-08-11 17:28:37
- * @LastEditTime: 2025-08-14 08:39:05
+ * @LastEditTime: 2025-08-15 15:25:32
 -->
 <template>
   <div>
@@ -25,7 +25,41 @@
           </t-input>
         </div>
       </t-row> -->
-      <t-table :data="tableData" :columns="COLUMNS" row-key="id">
+      <t-table
+        :data="tableData"
+        :columns="COLUMNS"
+        row-key="id"
+        vertical-align="middle"
+        :hover="true"
+        :selected-row-keys="selectedRowKeys"
+        :pagination="pagination"
+        :loading="dataLoading"
+      >
+        <template #status="{ row }">
+          <t-tag v-if="row.status === '正常'" theme="success"> {{ '正常' }}</t-tag>
+          <t-tag v-if="row.status === '已注销'" theme="warning"> {{ '已注销' }}</t-tag>
+          <t-tag v-if="row.status === '禁用'" theme="danger"> {{ '禁用' }}</t-tag>
+        </template>
+        <template #tags="{ row }">
+          <div style="display: flex; gap: 4px">
+            <t-tag
+              v-for="tag in row.tags"
+              :key="tag.id"
+              variant="light"
+              size="small"
+              :style="{
+                color: tag.color,
+                backgroundColor: `${tag.color}22`, // 半透明背景
+                borderColor: tag.color,
+                borderRadius: '4px',
+                padding: '0 8px',
+                margin: '2px',
+              }"
+            >
+              {{ tag.title }}
+            </t-tag>
+          </div>
+        </template>
         <template #empty>
           <t-empty-state description="No data available" />
         </template>
@@ -92,16 +126,16 @@ const COLUMNS: PrimaryTableCol<TableRowData>[] = [
     colKey: 'age',
   },
   {
-    title: '手机号码',
-    align: 'left',
-    width: 150,
-    colKey: 'phone',
-  },
-  {
     title: '状态',
     align: 'left',
     width: 100,
     colKey: 'status',
+  },
+  {
+    title: '手机号码',
+    align: 'left',
+    width: 150,
+    colKey: 'phone',
   },
   {
     title: '标签',
@@ -118,18 +152,27 @@ const COLUMNS: PrimaryTableCol<TableRowData>[] = [
   },
 ];
 const tableData = ref([]);
+const selectedRowKeys = ref<(string | number)[]>([1, 2]);
 const pagination = ref({
-  current: 1,
-  pageSize: 10,
+  defaultPageSize: 10,
   total: 100,
+  defaultCurrent: 1,
 });
+const dataLoading = ref(false);
 const fetchData = async () => {
-  const { list, total } = await getMemberList({
-    page: pagination.value.current,
-    pageSize: pagination.value.pageSize,
-  });
-  tableData.value = list;
-  pagination.value.total = total;
+  dataLoading.value = true;
+  try {
+    const { list } = await getMemberList();
+    tableData.value = list;
+    pagination.value = {
+      ...pagination.value,
+      total: list.length,
+    };
+  } catch (error) {
+    console.log(error);
+  } finally {
+    dataLoading.value = false;
+  }
 };
 onMounted(() => {
   fetchData();

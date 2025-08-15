@@ -23,7 +23,9 @@ export default [
               'age|20-60': 1,
               phone: /^1[39]\d{9}$/,
               'status|1': ['正常', '禁用', '已注销'],
-              'tags|1-3': ['@pick(["书法"、"养生"、"旅游"、"摄影"、 "新用户"])'],
+              'tags|1-3': [
+                '@pick([{ id: 1, title: "书法", color: "#25ba4e"},{ id: 2, title: "养生", color: "#ed7b2f" },{ id: 3, title: "旅游", color: "#4787f0"}])',
+              ],
               createTime: '2020-05-30 @date("HH:mm:ss")',
             },
           ],
