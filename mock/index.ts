@@ -5,33 +5,40 @@ export default [
   {
     url: '/api/get-member-list',
     method: 'get',
-    response: () => ({
-      code: 0,
-      data: {
-        ...Mock.mock({
-          'list|1-100': [
-            {
-              'UID|+1': '@id()',
-              // avatar: '@image("100x100", "@color()", "@cname()")',
-              // 头像，使用随机头像URL
-              // avatar: '@image(100x100, @color, #fff, avatar)', // 生成100x100像素的随机色块头像，文字为"avatar"
-              // 或者使用随机头像服务（需要网络）：
-              avatar: 'https://api.dicebear.com/7.x/identicon/svg?seed=@natural(1, 1000)', // 使用dicebear生成头像
-              // 使用中文姓名
-              nickname: '@cname()',
-              'gender|1': ['男', '女'],
-              'age|20-60': 1,
-              phone: /^1[39]\d{9}$/,
-              'status|1': ['正常', '禁用', '已注销'],
-              'tags|1-3': [
-                '@pick([{ id: 1, title: "书法", color: "#25ba4e"},{ id: 2, title: "养生", color: "#ed7b2f" },{ id: 3, title: "旅游", color: "#4787f0"}])',
-              ],
-              createTime: '2020-05-30 @date("HH:mm:ss")',
-            },
-          ],
-        }),
-      },
-    }),
+    response: () => {
+      // 使用 Mock.js 生成原始数据
+      const mockData = Mock.mock({
+        'list|1-100': [
+          {
+            'index|+1': 1,
+            'id|+1': 1,
+            avatar: '@image(100x100, @color, #fff, avatar)', // 生成100x100像素的随机色块头像，文字为"avatar"
+            'status|1': '@natural(0, 2)',
+            no: 'BH00@natural(01, 100)',
+            nickname: '@cname()',
+            'gender|1': ['男', '女'],
+            'age|20-60': 1,
+            phone: /^1[39]\d{9}$/,
+            'tags|1-3': [
+              '@pick([{ id: 1, title: "书法", color: "#25ba4e"},{ id: 2, title: "养生", color: "#ed7b2f" },{ id: 3, title: "旅游", color: "#4787f0"}])',
+            ],
+            createTime: '2020-05-30 @date("HH:mm:ss")',
+          },
+        ],
+      });
+
+      // 后处理 - 将 id 转为 00001 格式
+      const list = mockData.list.map((item) => ({
+        ...item,
+        id: String(item.id).padStart(5, '0'), // 将数字转为5位，前面补0
+      }));
+
+      // 返回最终响应
+      return {
+        code: 0,
+        data: { list },
+      };
+    },
   },
   {
     url: '/api/get-purchase-list',

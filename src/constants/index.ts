@@ -1,3 +1,10 @@
+// 用户状态枚举
+export const USER_STATUS = {
+  ACTIVE: 0, // 活跃
+  INACTIVE: 1, // 非活跃
+  BANNED: 2, // 禁用
+};
+
 // 合同状态枚举
 export const CONTRACT_STATUS = {
   FAIL: 0,
